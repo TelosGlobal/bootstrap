@@ -109,10 +109,7 @@ then
     wget https://assets.nagios.com/downloads/nagiosxi/agents/linux-nrpe-agent.tar.gz
     tar xzf linux-nrpe-agent.tar.gz
     cd linux-nrpe-agent
-    echo "Copy these variables:"
-    echo "127.0.0.1 64.74.98.106 10.91.176.13"
-    read -p "Press ENTER to continue..." e
-    sudo ./fullinstall 
+    sudo ./fullinstall -n -i 127.0.0.1 64.74.98.106 10.91.176.13
     /etc/init.d/xinetd restart
 else
     echo "Nagios setup cancelled."
