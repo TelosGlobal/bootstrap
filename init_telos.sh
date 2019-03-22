@@ -56,14 +56,14 @@ then
 	    read -p "Press space to continue..." space
 	    vi minion
 	    service salt-minion start
-	    sleep 3s
+	    sleep 3
 	    service salt-minion stop
-	    sleep 3s
+	    sleep 3
 	    service salt-minion start  
 	else
 	    echo "Salt setup cancelled."
 	fi
-
+	echo "Show current ZFS list"
 	zfs list
 	read -p "Configure ZFS? (y/n): " confirm
 	if [ $confirm == "Y" ] || [ $confirm == "y" ]
@@ -110,7 +110,7 @@ then
 	    echo "EOSIO install cancelled."
 	fi
 	
-	read -p "Install Nagios? (y/n): " confirm
+	read -p "Install Nagios? (Takes about 10 mins) (y/n): " confirm
 	if [ $confirm == "Y" ] || [ $confirm == "y" ]
 	then
 	    cd /tmp
@@ -119,7 +119,7 @@ then
 	    cd linux-nrpe-agent
 	    echo "Copy these variables:"
 	    echo "127.0.0.1 64.74.98.106 10.91.176.13"
-	    read -p "Press space to continue..." space
+	    read -p "Press ENTER to continue..." space
 	    sudo ./fullinstall 
 	    /etc/init.d/xinetd restart
 	else
