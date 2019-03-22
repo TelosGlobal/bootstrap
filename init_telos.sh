@@ -31,8 +31,7 @@ then
     read -p "Enter new hostname: " hostname
     echo "Setting hostname to $hostname...."
     hostnamectl set-hostname $hostname
-    vi /etc/hosts
-    cd /
+    sed -i.bak '/local /c\127.0.0.1   '"$hostname"'.local '"$hostname" /etc/hosts
 else
     echo "Hostname change cancelled."
 fi
