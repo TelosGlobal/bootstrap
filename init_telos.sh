@@ -39,7 +39,7 @@ then
     cd /etc/salt
     echo "Copy these variables:"
     echo "master: 66.150.99.232 id: <desired_minion_name> master_port: 4506"
-    read -p "Press space to continue..." space
+    read -p "Press Enter to continue..." e
     vi minion
     service salt-minion start
     sleep 3
@@ -107,7 +107,7 @@ then
     cd linux-nrpe-agent
     echo "Copy these variables:"
     echo "127.0.0.1 64.74.98.106 10.91.176.13"
-    read -p "Press ENTER to continue..." space
+    read -p "Press ENTER to continue..." e
     sudo ./fullinstall 
     /etc/init.d/xinetd restart
 else
