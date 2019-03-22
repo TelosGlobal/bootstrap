@@ -1,24 +1,28 @@
 #!/bin/bash
 
-apt-get update -y
-apt-get upgrade -y
+# Use this init script to kickstart a new telos node.  Spin up a node with:
+# 2 cpu, 32Gb ram, (2) 250Gb raw partitions for zfs, public IP (unless producer node)
+# Execute this command to kick things off:
+# apt-get install git -y && cd /root && git clone https://github.com/TelosGlobal/bootstrap.git && chown 775 bootstrap/ini_telos.sh
+#
+# Then run this script:
+# /root/bootstrap/init_telos.sh
+
+apt update && apt -y full-upgrade
+
 ### Check if a directory does not exist ###
 echo "Checking if user 'telosuser' exists...."
 if [ ! -d "/home/telosuser" ] 
 then
     echo "user telosuser doesn't exist.  Creating user..." 
-	adduser telosuser
-	usermod -aG sudo telosuser
+	useradd -d /home/telosuser -g telosuser -G sudo -m -s /bin/bash telosuser
 fi
 
 echo "Installing required software...."
-apt install software-properties-common git jq pigz ntp python-pip python3-pip zfsutils-linux -y 
-apt install salt-minion schedtool stress cpufrequtils lm-sensors linux-tools-generic -y
-apt-get update -y
-apt-get upgrade -y
+apt install -y software-properties-common git jq pigz ntp python-pip python3-pip zfsutils-linux salt-minion schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop
 
 echo "Setting up ntp...."
-ntpq -p
+/usr/bin/ntpq -p
 
 #Change hostname
 read -p "Set Hostname? (y/n): " confirm
@@ -64,7 +68,7 @@ then
 	echo "Creating pool and filesystem ..."
 	zpool create eosio mirror $disk1 $disk2
 	sleep 5
-	zfs create -o mountpoint=/ext eosio/ext
+	zfs create -o mountpoint=/ext -o compression=on -o atime=off eosio/ext
 	zpool list
 	zpool status
 	zfs list
