@@ -8,12 +8,11 @@
 #  run as root
 
 echo "First arg:  $1"
-echo "Second arg: $2"
+echo "Second arg:  $2"
 if [ -z $1 ] || [ -z $2 ]
 then
         echo "Insufficient arguments!"
         echo "Usage:  ./init_telos_server.sh [hostname] [git branch tag]"
-        echo "For correct tag, see: https://github.com/Telos-Foundation/telos"
 elif [[ $1 == *"net"* ]]
 then
 	apt-get update -y
@@ -28,7 +27,8 @@ then
 	fi
 
 	echo "Installing required software...."
-	apt install software-properties-common git jq pigz ntp python-pip salt-minion schedtool stress cpufrequtils lm-sensors linux-tools-4.4.0-142-generic -y
+	apt install software-properties-common git jq pigz ntp python-pip python3-pip zfsutils-linux -y 
+	apt install salt-minion schedtool stress cpufrequtils lm-sensors linux-tools-generic -y
 
 	echo "Setting up ntp...."
 	ntpq -p
@@ -37,32 +37,71 @@ then
 	echo "Setting hostname to $1...."
 	hostnamectl set-hostname $1
 	vi /etc/hosts
-	
 	cd /
-	chown -R telosuser /ext
 
+	read -p "Install Salt Minion? (Y/N): " confirm
+	if [ $confirm == "Y"]|| [ $confirm == "y"]
+	then
+	    cd /etc/salt
+	    echo "Copy these variables:"
+	    echo "master: 66.150.99.232 id: <desired_minion_name> master_port: 4506"
+	    read -p "Press space to continue..." space
+	    vi minion
+	    service salt-minion start
+	    sleep 3s
+	    service salt-minion stop
+	    sleep 3s
+	    service salt-minion start  
+	else
+	    echo "Salt setup cancelled."
+	fi
+
+        echo "ZFS setup ..."
+	parted -l
+	read -p "Enter first raw disk (sdc, sdd, etc): " disk1
+	read -p "Enter second raw disk (sdc, sdd, etc): " disk2
+	read -p "Continue? (Y/N): " confirm
+	if [ $confirm == "Y"]|| [ $confirm == "y"]
+	then
+	    echo "Creating pool and filesystem ..."
+	    zpool create eosio mirror $DISK1 $DISK2
+	    zfs create -o mountpoint=/ext eosio/ext
+	    zpool list
+	    zpool status
+	    zfs list
+	else
+	    echo "ZFS Setup cancelled."
+	fi
+
+	chown -R telosuser /ext
 	cd /ext
 	mkdir $2
 	chown -R telosuser $2
 	ln -s /ext/$2 /ext/telos-build
 	
-	
-	#Install Telos
-	echo "Installing TelosIO Version: "$2
+	#Install Eosio
+	echo "Installing EOSIO Version: "$2
 	cd /ext/telos-build
-	git clone https://github.com/EOSIO/eos.git
-	chown -R telosuser eos
-	cd eos
-	git checkout $2
-	git submodule update --init --recursive
-	cd scripts
-	export HOME=/ext/telos-build/
-	./eosio_build.sh
-		
-	#Verify Install & version
-	echo "Verifying TelosIO installation...."
-	../build/bin/nodeos --version
-	
+	wget 'https://github.com/EOSIO/eos/releases/download/v1.7.0/eosio_1.7.0-1-ubuntu-16.04_amd64.deb'
+	apt install ./eosio_1.7.0-1-ubuntu-16.04_amd64.deb
+	nodeos -v
+
+	read -p "Install Nagios? (Y/N): " confirm
+	if [ $confirm == "Y"]|| [ $confirm == "y"]
+	then
+	    cd /tmp
+	    wget https://assets.nagios.com/downloads/nagiosxi/agents/linux-nrpe-agent.tar.gz
+	    tar xzf linux-nrpe-agent.tar.gz
+	    cd linux-nrpe-agent
+	    echo "Copy these variables:"
+	    echo "127.0.0.1 64.74.98.106 10.91.176.13"
+	    read -p "Press space to continue..." space
+	    sudo ./fullinstall 
+	    /etc/init.d/xinetd restart
+	else
+	    echo "Nagios setup cancelled."
+	fi
+
 else
     echo "Check arguments!"
     echo "Usage:  ./init_telos_server.sh [hostname] [git branch tag]"
