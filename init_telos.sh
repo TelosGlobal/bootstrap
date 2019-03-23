@@ -40,10 +40,7 @@ read -p "Install Salt Minion? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then
     cd /etc/salt
-    echo "Copy these variables:"
-    echo "master: 66.150.99.232 id: <desired_minion_name> master_port: 4506"
-    read -p "Press Enter to continue..." e
-    vi minion
+    sed -i.bak -f minion_cfg.sed minion
     service salt-minion start
     sleep 3
     service salt-minion stop
