@@ -79,24 +79,51 @@ read -p "Install EOSIO? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then        
 	chown -R telosuser /ext
-	cd /ext
-	read -p "Enter EOSIO build version: " target
-	mkdir $target
-	chown -R telosuser $target
-	ln -s /ext/$2 /ext/telos-build
+	# cd /ext
+	# read -p "Enter EOSIO build version: " target
+	# mkdir $target
+	# chown -R telosuser $target
+	# ln -s /ext/$2 /ext/telos-build
 
 	#Install Eosio
-	echo "Installing EOSIO Version: "$target
-	cd /ext/telos-build
-	#sudo add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main" -y
+	cd /tmp
 	sudo apt-get update -y
-	#sudo apt-get install libicu55 -y
 	wget 'https://github.com/EOSIO/eos/releases/download/v1.7.0/eosio_1.7.0-1-ubuntu-18.04_amd64.deb'
 	apt install ./eosio_1.7.0-1-ubuntu-18.04_amd64.deb
-	nodeos -v
+	mkdir /ext/telos
+	mkdir /ext/telos/data
+	mkdir /ext/telos/data/config
+	mkdir /ext/telos/state/
+	mkdir /ext/telos/state/state-history
+	ln -s /usr/opt/eosio/1.7.0/bin/nodeos /ext/nodeos
+	chown -R telosuser /ext/*
+	/ext/nodeos -v	
 else
     echo "EOSIO install cancelled."
 fi
+
+read -p "Install config/genesis files? (y/n): " confirm
+if [ $confirm == "Y" ] || [ $confirm == "y" ]
+then
+	echo "Which network config should we install:"
+	echo "1. mainnet"
+	echo "2. stagenet"
+	echo "3. testnet"
+	read -p "Choose (1,2,3) : " network
+	echo ""
+	echo "Which server config should we install:"
+	echo "1. node01"
+	echo "2. node02"
+	echo "3. prdr01"
+	echo "4. prdr02"	
+	read -p "Choose (1,2,3,4) : " node
+	# mkdir $target
+	cp /root/bootstrap/config/$network/$node/config.ini /ext/telos/config/config.ini
+	cp /root/bootstrap/config/$network/genesis.json /ext/telos/config/genesis.json
+	chown -R telosuser /ext/*	
+else
+    echo "EOSIO configs install cancelled."
+fi	
 
 read -p "Install Nagios? (Takes about 10 mins) (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
