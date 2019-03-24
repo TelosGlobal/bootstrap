@@ -100,29 +100,6 @@ then
 	/ext/nodeos -v	
 else
     echo "EOSIO install cancelled."
-fi
-
-read -p "Install config/genesis files? (y/n): " confirm
-if [ $confirm == "Y" ] || [ $confirm == "y" ]
-then
-	echo "Which network config should we install:"
-	echo "1. mainnet"
-	echo "2. stagenet"
-	echo "3. testnet"
-	read -p "Choose (1,2,3) : " network
-	echo ""
-	echo "Which server config should we install:"
-	echo "1. node01"
-	echo "2. node02"
-	echo "3. prdr01"
-	echo "4. prdr02"	
-	read -p "Choose (1,2,3,4) : " node
-	# mkdir $target
-	cp /root/bootstrap/config/$network/$node/config.ini /ext/telos/config/config.ini
-	cp /root/bootstrap/config/$network/genesis.json /ext/telos/config/genesis.json
-	chown -R telosuser /ext/*	
-else
-    echo "EOSIO configs install cancelled."
 fi	
 
 read -p "Install Nagios? (Takes about 10 mins) (y/n): " confirm
