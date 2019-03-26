@@ -11,11 +11,12 @@
 apt update && apt -y full-upgrade
 
 echo "Installing required software...."
-apt install -y software-properties-common git jq pigz ntp python-pip python3-pip zfsutils-linux net-tools salt-minion nginx schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop tree
+apt install -y software-properties-common git jq pigz ntp python-pip python3-pip zfsutils-linux net-tools salt-minion schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop tree
 sudo add-apt-repository universe -y
 sudo add-apt-repository ppa:certbot/certbot -y
 sudo apt-get update -y
 sudo apt-get install certbot -y
+
 
 echo "Setting up ntp...."
 /usr/bin/ntpq -p
@@ -117,6 +118,32 @@ else
     echo "EOSIO install cancelled."
 fi	
 
+read -p "Install letsencrypt SSL certs? REQUIRES FW PORTS 80/8899 OPEN (y/n): " confirm
+if [ $confirm == "Y" ] || [ $confirm == "y" ]
+    echo "Type DNS Name for this host.  Examples:"
+    echo "<node1.testnet.telosglobal.io>"
+    echo "<node2.ny.telosglobal.io>"
+    read -p "Type DNS Name: " dnsname
+    sudo certbot certonly --standalone --preferred-challenges http -d $dnsname.telosglobal.io"
+else
+    echo "letsencrypt SSL install cancelled."
+fi
+
+read -p "Install NGINX? (y/n): " confirm
+if [ $confirm == "Y" ] || [ $confirm == "y" ]
+then
+	sudo apt-get install nginx -y
+	sudo apt-cache policy nginx
+	echo "deb http://nginx.org/packages/ubuntu/ $(lsb_release -s -c) nginx" | sudo tee -a /etc/apt/sources.list.d/nginx.list
+	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62
+	sudo apt-get update
+	sudo apt-cache policy nginx
+	sudo apt-get install nginx -y
+	nginx -v
+else
+    echo "NGINX install cancelled."
+fi
+
 read -p "Install Nagios? (Takes about 10 mins) (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then
@@ -130,7 +157,6 @@ else
     echo "Nagios setup cancelled."
 fi
 
-echo "bootstrap completed.  Hints:"
-echo "1.  To setup letsencrypt, open fw ports 80/8899 and type:  "
-echo "    sudo certbot certonly --standalone --preferred-challenges http -d <node_info>.telosglobal.io"
-echo "2.  To setup nginx - google it :)"
+echo "bootstrap completed."
+
+
