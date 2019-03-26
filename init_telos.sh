@@ -38,7 +38,8 @@ echo "Checking if user 'telosuser' exists...."
 if [ ! -d "/home/telosuser" ] 
 then
     echo "user telosuser doesn't exist.  Creating user..." 
-	useradd -d /home/telosuser -g telosuser -G sudo -m -s /bin/bash telosuser
+    adduser telosuser
+    usermod -aG sudo telosuser
 else
     echo "telosuser already exists...skipping."
 fi
@@ -85,35 +86,34 @@ fi
 read -p "Install EOSIO? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then        
-	### Check if a directory does not exist ###
-        echo "Checking if user 'telosuser' exists...."
-        if [ ! -d "/home/telosuser" ] 
-        then
-            echo "user telosuser doesn't exist.  Creating user..." 
-	    useradd -d /home/telosuser -g telosuser -G sudo -m -s /bin/bash telosuser
-        else
-            echo "telosuser already exists...skipping."
-        fi
-	chown -R telosuser /ext
-	# cd /ext
-	# read -p "Enter EOSIO build version: " target
-	# mkdir $target
-	# chown -R telosuser $target
-	# ln -s /ext/$2 /ext/telos-build
+    ### Check if a directory does not exist ###
+    echo "Checking if user 'telosuser' exists...."
+    if [ ! -d "/home/telosuser" ] 
+    then
+        echo "user telosuser doesn't exist.  Creating user..." 
+	adduser telosuser
+        usermod -aG sudo telosuser
+    else
+        echo "telosuser already exists...skipping."
+    fi
+    chown -R telosuser /ext
 
-	#Install Eosio
-	cd /tmp
-	sudo apt-get update -y
-	wget 'https://github.com/EOSIO/eos/releases/download/v1.7.0/eosio_1.7.0-1-ubuntu-18.04_amd64.deb'
-	apt install ./eosio_1.7.0-1-ubuntu-18.04_amd64.deb
-	mkdir /ext/telos
-	mkdir /ext/telos/data
-	mkdir /ext/telos/data/config
-	mkdir /ext/telos/state/
-	mkdir /ext/telos/state/state-history
-	ln -s /usr/opt/eosio/1.7.0/bin/nodeos /ext/nodeos
-	chown -R telosuser /ext/*
-	/ext/nodeos -v	
+    #Install Eosio
+    cd /tmp
+    sudo apt-get update -y
+    wget 'https://github.com/EOSIO/eos/releases/download/v1.7.0/eosio_1.7.0-1-ubuntu-18.04_amd64.deb'
+    apt install ./eosio_1.7.0-1-ubuntu-18.04_amd64.deb
+    if [ ! -d "/ext/telos" ] 
+    then
+        mkdir /ext/telos
+        mkdir /ext/telos/data
+        mkdir /ext/telos/data/config
+        mkdir /ext/telos/state/
+        mkdir /ext/telos/state/state-history
+    fi
+    ln -s /usr/opt/eosio/1.7.0/bin/nodeos /ext/nodeos
+    chown -R telosuser /ext/*
+    /ext/nodeos -v	
 else
     echo "EOSIO install cancelled."
 fi	
@@ -132,14 +132,14 @@ fi
 read -p "Install NGINX? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then
-	sudo apt-get install nginx -y
-	sudo apt-cache policy nginx
-	echo "deb http://nginx.org/packages/ubuntu/ $(lsb_release -s -c) nginx" | sudo tee -a /etc/apt/sources.list.d/nginx.list
-	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62
-	sudo apt-get update
-	sudo apt-cache policy nginx
-	sudo apt-get install nginx -y
-	nginx -v
+    sudo apt-get install nginx -y
+    sudo apt-cache policy nginx
+    echo "deb http://nginx.org/packages/ubuntu/ $(lsb_release -s -c) nginx" | sudo tee -a /etc/apt/sources.list.d/nginx.list
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62
+    sudo apt-get update
+    sudo apt-cache policy nginx
+    sudo apt-get install nginx -y
+    nginx -v
 else
     echo "NGINX install cancelled."
 fi
