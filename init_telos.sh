@@ -19,7 +19,7 @@ then
 fi
 
 echo "Installing required software...."
-apt install -y software-properties-common git jq pigz ntp python-pip python3-pip zfsutils-linux salt-minion schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop
+apt install -y software-properties-common git jq pigz ntp python-pip python3-pip zfsutils-linux salt-minion schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop tree
 
 echo "Setting up ntp...."
 /usr/bin/ntpq -p
