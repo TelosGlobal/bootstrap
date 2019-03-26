@@ -47,7 +47,7 @@ read -p "Install Salt Minion? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then
     cd /etc/salt
-    sed -i.bak -f minion_cfg.sed minion
+    sed -i.bak -f /root/bootstrap/minion_cfg.sed minion
     service salt-minion start
     sleep 3
     service salt-minion stop
