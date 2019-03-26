@@ -11,7 +11,7 @@
 apt update && apt -y full-upgrade
 
 echo "Installing required software...."
-apt install -y software-properties-common git jq pigz ntp python-pip python3-pip zfsutils-linux salt-minion nginx schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop tree
+apt install -y software-properties-common git jq pigz ntp python-pip python3-pip zfsutils-linux net-tools salt-minion nginx schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop tree
 sudo add-apt-repository universe -y
 sudo add-apt-repository ppa:certbot/certbot -y
 sudo apt-get update -y
