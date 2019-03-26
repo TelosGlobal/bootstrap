@@ -19,7 +19,11 @@ then
 fi
 
 echo "Installing required software...."
-apt install -y software-properties-common git jq pigz ntp python-pip python3-pip zfsutils-linux salt-minion schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop tree
+apt install -y software-properties-common git jq pigz ntp python-pip python3-pip zfsutils-linux salt-minion nginx schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop tree
+sudo add-apt-repository universe -y
+sudo add-apt-repository ppa:certbot/certbot -y
+sudo apt-get update -y
+sudo apt-get install certbot -y
 
 echo "Setting up ntp...."
 /usr/bin/ntpq -p
@@ -114,3 +118,8 @@ then
 else
     echo "Nagios setup cancelled."
 fi
+
+echo "bootstrap completed.  Hints:"
+echo "1.  To setup letsencrypt, open fw ports 80/8899 and type:  "
+echo "    sudo certbot certonly --standalone --preferred-challenges http -d <node_info>.telosglobal.io"
+echo "2.  To setup nginx - google it :)"
