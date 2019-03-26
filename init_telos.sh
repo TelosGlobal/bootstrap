@@ -49,6 +49,7 @@ if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then
     cd /etc/salt
     sed -i.bak -f /root/bootstrap/minion_cfg.sed minion
+    sed -i.bak2 '/#id:/c\id: '"$hostname" minion
     service salt-minion start
     sleep 3
     service salt-minion stop
