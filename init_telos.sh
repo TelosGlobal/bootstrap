@@ -120,11 +120,12 @@ fi
 
 read -p "Install letsencrypt SSL certs? REQUIRES FW PORTS 80/8899 OPEN (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
+then
     echo "Type DNS Name for this host.  Examples:"
     echo "<node1.testnet.telosglobal.io>"
     echo "<node2.ny.telosglobal.io>"
     read -p "Type DNS Name: " dnsname
-    sudo certbot certonly --standalone --preferred-challenges http -d $dnsname.telosglobal.io"
+    sudo certbot certonly --standalone --preferred-challenges http -d $dnsname.telosglobal.io
 else
     echo "letsencrypt SSL install cancelled."
 fi
