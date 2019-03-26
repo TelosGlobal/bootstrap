@@ -10,14 +10,6 @@
 
 apt update && apt -y full-upgrade
 
-### Check if a directory does not exist ###
-echo "Checking if user 'telosuser' exists...."
-if [ ! -d "/home/telosuser" ] 
-then
-    echo "user telosuser doesn't exist.  Creating user..." 
-	useradd -d /home/telosuser -g telosuser -G sudo -m -s /bin/bash telosuser
-fi
-
 echo "Installing required software...."
 apt install -y software-properties-common git jq pigz ntp python-pip python3-pip zfsutils-linux salt-minion nginx schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop tree
 sudo add-apt-repository universe -y
@@ -38,6 +30,16 @@ then
     sed -i.bak '/local /c\127.0.0.1   '"$hostname"'.local '"$hostname" /etc/hosts
 else
     echo "Hostname change cancelled."
+fi
+
+### Check if a directory does not exist ###
+echo "Checking if user 'telosuser' exists...."
+if [ ! -d "/home/telosuser" ] 
+then
+    echo "user telosuser doesn't exist.  Creating user..." 
+	useradd -d /home/telosuser -g telosuser -G sudo -m -s /bin/bash telosuser
+else
+    echo "telosuser already exists...skipping."
 fi
 
 read -p "Install Salt Minion? (y/n): " confirm
@@ -82,6 +84,15 @@ fi
 read -p "Install EOSIO? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then        
+	### Check if a directory does not exist ###
+        echo "Checking if user 'telosuser' exists...."
+        if [ ! -d "/home/telosuser" ] 
+        then
+            echo "user telosuser doesn't exist.  Creating user..." 
+	    useradd -d /home/telosuser -g telosuser -G sudo -m -s /bin/bash telosuser
+        else
+            echo "telosuser already exists...skipping."
+        fi
 	chown -R telosuser /ext
 	# cd /ext
 	# read -p "Enter EOSIO build version: " target
