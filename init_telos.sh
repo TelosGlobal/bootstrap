@@ -115,9 +115,8 @@ then
     apt install ./eosio_1.7.0-1-ubuntu-18.04_amd64.deb
     if [ ! -d "/ext/telos" ] 
     then
-        mkdir /ext/telos
-        mkdir /ext/telos/data
-        mkdir /ext/telos/data/config
+        mkdir /ext/telos/
+        mkdir /ext/telos/config
         mkdir /ext/telos/state/
         mkdir /ext/telos/state/state-history
     fi
