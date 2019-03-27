@@ -121,6 +121,11 @@ then
         mkdir /ext/telos/state/
         mkdir /ext/telos/state/state-history
     fi
+    if [ ! -d "/var/log/nodeos" ] 
+    then
+        mkdir /var/log/nodeos
+	chown telosuser /var/log/nodeos/
+    fi
     sudo chown -R telosuser /usr/opt/eosio/
     ln -s /usr/opt/eosio/1.7.0/bin/nodeos /ext/telos/nodeos
     chown -R telosuser /ext/*
