@@ -60,9 +60,9 @@ then
     sed -i -f /root/bootstrap/minion_cfg.sed minion
     echo "Done.  Starting Minion..."
     service salt-minion start
-    sleep 3
+    sleep 1
     service salt-minion stop
-    sleep 3
+    sleep 1
     service salt-minion start  
     echo "Minion started."
 else
