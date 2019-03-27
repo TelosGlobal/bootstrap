@@ -1,6 +1,6 @@
 # BOOTSTRAP Repository
 
-##init_telos.sh
+## init_telos.sh
 This script is run on fresh Ubuntu (18.04) servers to install TELOS and configure
 the server as either an API/P2P node or a producer node.
 
@@ -13,10 +13,10 @@ apt-get install git -y && cd /root && git clone https://github.com/TelosGlobal/b
 Then run this script:
 /root/bootstrap/init_telos.sh
 
-##minion_cfg.sed
+## minion_cfg.sed
 This file is used by init_telos.sh to configure the salt minion config file.
 
-##nginx_sample
+## nginx_sample
 Sample nginx file that can be copied and configured for the local SSL offload proxy.
 Desired config is to install nginx on the NODE01 server and config to ssl offload and
 load-balance API and P2P traffic between NODE01 and NODE02.
