@@ -22,6 +22,7 @@ echo "Setting up ntp...."
 /usr/bin/ntpq -p
 
 #Change hostname
+echo "The current hostname is $HOSTNAME"
 read -p "Set Hostname? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then
@@ -47,14 +48,22 @@ fi
 read -p "Install Salt Minion? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then
+    if [ -z "$hostname" ]
+        hostname=$HOSTNAME
+    fi
+    echo "$hostname"
     cd /etc/salt
-    sed -i.bak -f /root/bootstrap/minion_cfg.sed minion
-    sed -i.bak2 '/#id:/c\id: '"$hostname" minion
+    echo "Adding $hostname to minion file..."
+    sed -i.bak '/#id:/c\id: '"$hostname" minion
+    echo "Adding master IP and port to minion file..."
+    sed -i -f /root/bootstrap/minion_cfg.sed minion
+    echo "Done.  Starting Minion..."
     service salt-minion start
     sleep 3
     service salt-minion stop
     sleep 3
     service salt-minion start  
+    echo "Minion started."
 else
     echo "Salt setup cancelled."
 fi
