@@ -49,6 +49,7 @@ read -p "Install Salt Minion? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then
     if [ -z "$hostname" ]
+    then
         hostname=$HOSTNAME
     fi
     echo "$hostname"
