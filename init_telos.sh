@@ -17,7 +17,6 @@ sudo add-apt-repository ppa:certbot/certbot -y
 sudo apt-get update -y
 sudo apt-get install certbot -y
 
-
 echo "Setting up ntp...."
 /usr/bin/ntpq -p
 
@@ -122,14 +121,16 @@ then
         mkdir /ext/telos/state/
         mkdir /ext/telos/state/state-history
     fi
-    ln -s /usr/opt/eosio/1.7.0/bin/nodeos /ext/nodeos
+    sudo chown -R telosuser /usr/opt/eosio/
+    ln -s /usr/opt/eosio/1.7.0/bin/nodeos /ext/telos/nodeos
     chown -R telosuser /ext/*
-    /ext/nodeos -v	
+    /ext/telos/nodeos -v	
 else
     echo "EOSIO install cancelled."
 fi	
 
-read -p "Install letsencrypt SSL certs? REQUIRES FW PORTS 80/8899 OPEN (y/n): " confirm
+echo "This ONLY applies to NODE01 and REQUIRES FW PORTS 80/8899 OPEN"
+read -p "Install letsencrypt SSL certs?  (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then
     echo "Type DNS Name for this host.  Examples:"
@@ -141,6 +142,7 @@ else
     echo "letsencrypt SSL install cancelled."
 fi
 
+echo "This ONLY applies to NODE01 and REQUIRES UFW PORTS 9876/8899 OPEN"
 read -p "Install NGINX? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then
@@ -151,6 +153,12 @@ then
     sudo apt-get update
     sudo apt-cache policy nginx
     sudo apt-get install nginx -y
+    echo "Setting ufw ports:"
+    sudo ufw allow 80/tcp
+    sudo ufw allow 8888/tcp
+    sudo ufw allow 8899/tcp
+    sudo ufw allow 9876/tcp
+    echo "ufw ports set."
     nginx -v
 else
     echo "NGINX install cancelled."
