@@ -6,7 +6,7 @@ DATADIR=/ext/telos
 CFGDIR=/ext/telos/config
 LOGDIR=/var/log/nodeos
 TIMESTAMP=$(date '+%Y-%m-%d-%H_%M_%S')
-$CFGDIR/stop.sh
+$DATADIR/stop.sh
 
 echo "Backing up log files to logbackup-$TIMESTAMP.tar"
 tar cf $LOGDIR/logbackup-$TIMESTAMP.tar -C $LOGDIR stderr.txt
