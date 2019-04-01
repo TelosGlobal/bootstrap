@@ -125,6 +125,7 @@ then
     fi
     sudo chown -R telosuser /usr/opt/eosio/
     ln -s /usr/opt/eosio/1.7.0/bin/nodeos /ext/telos/nodeos
+    ln -s /usr/opt/eosio/1.7.0/bin/cleos /ext/telos/cleos
     cp -f /root/bootstrap/scripts/* /ext/telos/
     chown -R telosuser /ext/*
     /ext/telos/nodeos -v	
