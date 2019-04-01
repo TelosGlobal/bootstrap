@@ -177,7 +177,7 @@ then
     cd linux-nrpe-agent
     sudo ./fullinstall -n -i '127.0.0.1 64.74.98.106 10.91.176.13'
     /etc/init.d/xinetd restart
-    echo "See /root/bootstrap/scripts/nagios/README to finish setup."
+    echo "See /root/bootstrap/scripts/nagios/README.md to finish setup."
 else
     echo "Nagios setup cancelled."
 fi
