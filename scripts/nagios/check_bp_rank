@@ -1,0 +1,19 @@
+#!/bin/bash
+# Nagios Plugin Bash Script - check_bp_rank
+# This script checks our BP rank
+# This script lives at: /usr/local/nagios/libexec/
+OUTPUT=`sudo /ext/telos-build/eos/build/bin/cleos system listproducers -l 500 | grep -v Producer | grep -n telosglobal1 | cut -d ":" -f 1`
+#echo $OUTPUT
+if [ "$OUTPUT" -lt "20" ]
+then
+    echo "OK, Current rank: $OUTPUT"
+    exit 0
+elif [ "$OUTPUT" -lt "22" ]
+then
+    echo "WARNING, Current rank: $OUTPUT"
+    exit 1
+else
+    echo "CRITICAL, Current rank: $OUTPUT"
+    exit 2 
+fi
+
