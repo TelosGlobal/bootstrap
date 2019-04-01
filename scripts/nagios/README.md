@@ -19,8 +19,11 @@ Update NAGIOS ALL to:
 `/usr/local/nagios/etc/nrpe.cfg`
 
 Add:
+
 `command[check_block_produce]=/usr/local/nagios/libexec/check_block_produce`
+
 `command[check_bp_rank]=/usr/local/nagios/libexec/check_bp_rank`
+
 `command[check_is_active]=/usr/local/nagios/libexec/check_is_active`
 
 ### Restart xinetd
@@ -43,6 +46,8 @@ then:
 
 ### Local plug-in tests:
 `sudo /usr/local/nagios/libexec/check_is_active`
+
 `sudo /usr/local/nagios/libexec/check_bp_rank`
+
 `sudo /usr/local/nagios/libexec/check_block_produce`
 
