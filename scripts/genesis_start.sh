@@ -14,7 +14,7 @@ echo "Starting compression of logbackup-$TIMESTAMP.tar in background"
 nice bzip2 -q9 $LOGDIR/logbackup-$TIMESTAMP.tar &
 
 echo "Starting nodeos as GENESIS..."
-$NODEOS --data-dir $DATADIR --config-dir $CFGDIR --genesis-json $CFGDIR/genesis.json --delete-all-blocks &>> $LOGDIR/stderr.txt & echo $! > $DATADIR/nodeos.pid
+$NODEOS --data-dir $DATADIR --config-dir $CFGDIR --genesis-json $CFGDIR/genesis.json --disable-replay-opts --delete-all-blocks &>> $LOGDIR/stderr.txt & echo $! > $DATADIR/nodeos.pid
 
 PID=$(cat $DATADIR/nodeos.pid)
 if ps -p $PID > /dev/null; then
