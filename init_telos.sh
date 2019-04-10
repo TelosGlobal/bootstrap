@@ -109,8 +109,8 @@ then
     #Install Eosio
     cd /tmp
     sudo apt-get update -y
-    wget 'https://github.com/EOSIO/eos/releases/download/v1.7.0/eosio_1.7.0-1-ubuntu-18.04_amd64.deb'
-    apt install ./eosio_1.7.0-1-ubuntu-18.04_amd64.deb
+    wget 'https://github.com/EOSIO/eos/releases/download/v1.7.1/eosio_1.7.1-1-ubuntu-18.04_amd64.deb'
+    apt install ./eosio_1.7.1-1-ubuntu-18.04_amd64.deb
     if [ ! -d "/ext/telos" ] 
     then
         mkdir /ext/telos/
