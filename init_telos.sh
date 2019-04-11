@@ -109,8 +109,8 @@ then
     #Install Eosio
     cd /tmp
     sudo apt-get update -y
-    wget 'https://github.com/EOSIO/eos/releases/download/v1.7.0/eosio_1.7.0-1-ubuntu-18.04_amd64.deb'
-    apt install ./eosio_1.7.0-1-ubuntu-18.04_amd64.deb
+    wget 'https://github.com/EOSIO/eos/releases/download/v1.7.1/eosio_1.7.1-1-ubuntu-18.04_amd64.deb'
+    apt install ./eosio_1.7.1-1-ubuntu-18.04_amd64.deb
     if [ ! -d "/ext/telos" ] 
     then
         mkdir /ext/telos/
@@ -124,7 +124,8 @@ then
 	chown telosuser /var/log/nodeos/
     fi
     sudo chown -R telosuser /usr/opt/eosio/
-    ln -s /usr/opt/eosio/1.7.0/bin/nodeos /ext/telos/nodeos
+    ln -s /usr/opt/eosio/1.7.1/bin/nodeos /ext/telos/nodeos
+    ln -s /usr/opt/eosio/1.7.1/bin/cleos /ext/telos/cleos
     cp -f /root/bootstrap/scripts/* /ext/telos/
     chown -R telosuser /ext/*
     /ext/telos/nodeos -v	
@@ -176,6 +177,7 @@ then
     cd linux-nrpe-agent
     sudo ./fullinstall -n -i '127.0.0.1 64.74.98.106 10.91.176.13'
     /etc/init.d/xinetd restart
+    echo "See /root/bootstrap/scripts/nagios/README.md to finish setup."
 else
     echo "Nagios setup cancelled."
 fi

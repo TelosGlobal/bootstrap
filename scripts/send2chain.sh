@@ -8,8 +8,8 @@
 #  Locks wallet
 
 ACCT="telosglobal1"
-CRACCT="chainrifttls"
-MEMO="UIIQS4C5ZZ"
+CRACCT="chainriftcom"
+MEMO="28WMLDJFL5"
 WALLET="trx"
 KEY="PW5K2jiWEAVj2coHrDPQSjQbZSGUs27CS2rNZPckLFjZPibHns7z1"
 AMT=`/ext/telos/cleos get account $ACCT -j | jq '.core_liquid_balance'`
