@@ -141,7 +141,7 @@ then
     echo "<node1.testnet.telosglobal.io>"
     echo "<node2.ny.telosglobal.io>"
     read -p "Type DNS Name: " dnsname
-    sudo certbot certonly --standalone --preferred-challenges http -d $dnsname.telosglobal.io
+    sudo certbot certonly --standalone --preferred-challenges http -d $dnsname
 else
     echo "letsencrypt SSL install cancelled."
 fi
