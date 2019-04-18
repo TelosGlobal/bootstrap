@@ -8,9 +8,11 @@ Use this init script to kickstart a new telos node.  Spin up a node with:
 2 cpu, 32Gb ram, (2) 250Gb raw partitions for zfs, public IP (unless producer node)
 
 Execute this command to kick things off:
+
 `apt-get install git -y && cd /root && git clone https://github.com/TelosGlobal/bootstrap.git && cd /root/bootstrap/ && chown 775 /root/bootstrap/init_telos.sh`
 
 Then run this script:
+
 `/root/bootstrap/init_telos.sh`
 
 ## minion_cfg.sed
@@ -23,4 +25,5 @@ load-balance API and P2P traffic between NODE01 and NODE02.
 
 ## Setup ssh root keys
 From the SALT server type:
+
 `cat ~/.ssh/id_rsa.pub | ssh username@server.address.com 'cat >> ~/.ssh/authorized_keys'`
