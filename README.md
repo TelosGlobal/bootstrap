@@ -24,6 +24,6 @@ Desired config is to install nginx on the NODE01 server and config to ssl offloa
 load-balance API and P2P traffic between NODE01 and NODE02.
 
 ## Setup ssh root keys
-From the SALT server type:
+From the SALT server as ROOT type:
 
 `cat ~/.ssh/id_rsa.pub | ssh username@server.address.com 'cat >> ~/.ssh/authorized_keys'`
