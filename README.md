@@ -20,3 +20,7 @@ This file is used by `init_telos.sh` to configure the salt minion config file.
 Sample nginx file that can be copied and configured for the local SSL offload proxy.
 Desired config is to install nginx on the NODE01 server and config to ssl offload and
 load-balance API and P2P traffic between NODE01 and NODE02.
+
+## Setup ssh root keys
+From the SALT server type:
+`cat ~/.ssh/id_rsa.pub | ssh username@server.address.com 'cat >> ~/.ssh/authorized_keys'`
