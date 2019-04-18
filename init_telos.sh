@@ -15,6 +15,13 @@ sudo add-apt-repository ppa:certbot/certbot -y
 sudo apt-get update -y
 sudo apt-get install certbot -y
 
+#General Updates
+
+echo "Setting up for ssh keys if needed"
+mkdir -p $HOME/.ssh
+chmod 0700 $HOME/.ssh
+
+
 echo "Setting up ntp...."
 /usr/bin/ntpq -p
 
