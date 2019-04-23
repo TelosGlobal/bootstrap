@@ -21,20 +21,20 @@ then
 fi
 
 echo "Stopping nodeos..."
-# /ext/telos/stop.sh
-# cd /tmp
+/ext/telos/stop.sh
+cd /tmp
 
 echo "Cloning v$VERSION..."
-echo "wget https://github.com/eosio/eos/releases/download/v$VERSION/eosio_$VERSION-1-ubuntu-18.04_amd64.deb"
+wget https://github.com/eosio/eos/releases/download/v$VERSION/eosio_$VERSION-1-ubuntu-18.04_amd64.deb
 
 echo "Installing v$VERSION..."
-echo "sudo apt install ./eosio_$VERSION-1-ubuntu-18.04_amd64.deb"
+sudo apt install ./eosio_$VERSION-1-ubuntu-18.04_amd64.deb
 
 echo "Updating symlinks..."
-#rm /ext/telos/nodeos
-#rm /ext/telos/cleos
-echo "ln -s /usr/opt/eosio/$VERSION/bin/nodeos /ext/telos/nodeos"
-echo "ln -s /usr/opt/eosio/$VERSION/bin/cleos /ext/telos/cleos"
+rm /ext/telos/nodeos
+rm /ext/telos/cleos
+ln -s /usr/opt/eosio/$VERSION/bin/nodeos /ext/telos/nodeos
+ln -s /usr/opt/eosio/$VERSION/bin/cleos /ext/telos/cleos
 
 chown -R telosuser /ext/telos/
 
