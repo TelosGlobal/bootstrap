@@ -15,6 +15,13 @@ Then run this script:
 
 `/root/bootstrap/init_telos.sh`
 
+## git_crypt
+To install git_crypt, perform the following steps:
+- run the `install_git_crypt.sh` script
+- Push the cryptkey file from the salt server (`push_cryptkey.sh`)
+- Run `git-crypt unlock cryptkey`
+- DELETE cryptkey file
+
 ## minion_cfg.sed
 This file is used by `init_telos.sh` to configure the salt minion config file.
 
