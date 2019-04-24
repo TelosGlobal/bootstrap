@@ -1,7 +1,11 @@
 #!/bin/bash
 
 # Run script as root from /root/bootstrap/
+<<<<<<< HEAD
 # Run as:  upgrade_telos.sh <1.7.2>  (without the v)
+=======
+# Run as:  upgrade_telos.sh -v <1.7.2>  (without the v)
+>>>>>>> c5def6f710f2aa2f5941fbcdef94e5a697dad3f5
 
 while getopts v: option
 do
