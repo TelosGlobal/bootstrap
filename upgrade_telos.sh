@@ -24,6 +24,9 @@ echo "Stopping nodeos..."
 /ext/telos/stop.sh
 cd /tmp
 
+echo "Removing current EOSIO package..."
+sudo apt remove eosio -y
+
 echo "Cloning v$VERSION..."
 wget https://github.com/eosio/eos/releases/download/v$VERSION/eosio_$VERSION-1-ubuntu-18.04_amd64.deb
 
