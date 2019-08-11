@@ -16,7 +16,9 @@ done
 
 if [ -z "$VERSION" ]
 then
-    echo "No arguments passed.  Exiting..."
+    echo "No arguments passed. Use the following example: "
+    echo "upgrade_telos.sh -v <1.7.2>  (without the v)"
+    echo "Exiting..."
     exit
 fi
 
