@@ -116,8 +116,8 @@ then
     #Install Eosio
     cd /tmp
     sudo apt-get update -y
-    wget 'https://github.com/EOSIO/eos/releases/download/v1.7.1/eosio_1.7.1-1-ubuntu-18.04_amd64.deb'
-    apt install ./eosio_1.7.1-1-ubuntu-18.04_amd64.deb
+    wget 'https://github.com/EOSIO/eos/releases/download/v1.7.4/eosio_1.7.4-1-ubuntu-18.04_amd64.deb'
+    apt install ./eosio_1.7.4-1-ubuntu-18.04_amd64.deb
     if [ ! -d "/ext/telos" ] 
     then
         mkdir /ext/telos/
@@ -131,8 +131,8 @@ then
 	chown telosuser /var/log/nodeos/
     fi
     sudo chown -R telosuser /usr/opt/eosio/
-    ln -s /usr/opt/eosio/1.7.1/bin/nodeos /ext/telos/nodeos
-    ln -s /usr/opt/eosio/1.7.1/bin/cleos /ext/telos/cleos
+    ln -s /usr/opt/eosio/1.7.4/bin/nodeos /ext/telos/nodeos
+    ln -s /usr/opt/eosio/1.7.4/bin/cleos /ext/telos/cleos
     cp -rf /root/bootstrap/scripts/. /ext/telos/
     chown -R telosuser /ext/*
     /ext/telos/nodeos -v	
