@@ -85,7 +85,7 @@ then
     if [ $confirm == "Y" ] || [ $confirm == "y" ]
     then
 	echo "Creating pool and filesystem ..."
-	zpool create eosio mirror $disk1 $disk2
+	zpool create eosio $disk1 $disk2
 	sleep 5
 	zfs create -o mountpoint=/ext -o compression=on -o atime=off eosio/ext
 	zpool list
