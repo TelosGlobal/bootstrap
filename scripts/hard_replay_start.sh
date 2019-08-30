@@ -1,4 +1,5 @@
 #!/bin/bash
+#/usr/bin/php /root/scripts/slack.php "Jungle Test Server" "businesscat" "infrastructure-team" "Starting NodeOS"
 
 NODEOS=/ext/telos/nodeos
 DATADIR=/ext/telos
@@ -13,7 +14,7 @@ echo "Starting compression of logbackup-$TIMESTAMP.tar in background"
 nice bzip2 -q9 $LOGDIR/logbackup-$TIMESTAMP.tar &
 
 echo "Starting nodeos to REPLAY..."
-$NODEOS --data-dir $DATADIR --config-dir $CFGDIR --replay-blockchain &>> $LOGDIR/stderr.txt & echo $! > $DATADIR/nodeos.pid
+$NODEOS --data-dir $DATADIR --config-dir $CFGDIR --replay-blockchain --hard-replay-blockchain &>> $LOGDIR/stderr.txt & echo $! > $DATADIR/nodeos.pid
 
 PID=$(cat $DATADIR/nodeos.pid)
 if ps -p $PID > /dev/null; then
