@@ -105,7 +105,7 @@ then
     echo "  1:  v1.7.4"
     echo "  2:  v1.8.3"
     read -p "Select (1) or (2): " instVer
-    if [ $instVer == "1" ] || [ $instVer == "2"]
+    if [ $instVer == "1" ] || [ $instVer == "2" ]
     then
         ### Check if a directory does not exist ###
         echo "Checking if user 'telosuser' exists...."
@@ -122,8 +122,14 @@ then
         #Install Eosio
         cd /tmp
         sudo apt-get update -y
-        wget 'https://github.com/EOSIO/eos/releases/download/v1.7.4/eosio_1.7.4-1-ubuntu-18.04_amd64.deb'
-        apt install ./eosio_1.7.4-1-ubuntu-18.04_amd64.deb
+        if [ $instVer == "1" ]
+        then
+            wget 'https://github.com/EOSIO/eos/releases/download/v1.7.4/eosio_1.7.4-1-ubuntu-18.04_amd64.deb'
+            apt install ./eosio_1.7.4-1-ubuntu-18.04_amd64.deb
+        else
+            wget https://github.com/eosio/eos/releases/download/v1.8.3/eosio_1.8.3-1-ubuntu-18.04_amd64.deb
+            apt install ./eosio_1.8.3-1-ubuntu-18.04_amd64.deb
+        fi
         if [ ! -d "/ext/telos" ] 
         then
             mkdir /ext/telos/
@@ -137,8 +143,14 @@ then
    	    chown telosuser /var/log/nodeos/
         fi
         sudo chown -R telosuser /usr/opt/eosio/
-        ln -s /usr/opt/eosio/1.7.4/bin/nodeos /ext/telos/nodeos
-        ln -s /usr/opt/eosio/1.7.4/bin/cleos /ext/telos/cleos
+        if [ $instVer == "1" ]
+        then
+            ln -s /usr/opt/eosio/1.7.4/bin/nodeos /ext/telos/nodeos
+            ln -s /usr/opt/eosio/1.7.4/bin/cleos /ext/telos/cleos
+	else    
+            ln -s /usr/opt/eosio/1.8.3/bin/nodeos /ext/telos/nodeos
+            ln -s /usr/opt/eosio/1.8.3/bin/cleos /ext/telos/cleos
+        fi
         cp -rf /root/bootstrap/scripts/. /ext/telos/
         chown -R telosuser /ext/*
         /ext/telos/nodeos -v	
