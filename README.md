@@ -15,6 +15,9 @@ Then run this script:
 
 `/root/bootstrap/init_telos.sh`
 
+## To make sure git repo is set correctly
+`git remote set-url origin https://<USERNAME>:<PASSWORD>@github.com/path/to/repo.git`
+
 ## git_crypt
 To install git_crypt, perform the following steps:
 - run the `install_git_crypt.sh` script
