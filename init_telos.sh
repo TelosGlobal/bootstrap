@@ -101,41 +101,50 @@ fi
 read -p "Install EOSIO? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then        
-    ### Check if a directory does not exist ###
-    echo "Checking if user 'telosuser' exists...."
-    if [ ! -d "/home/telosuser" ] 
+    echo "Which EOSIO version? "
+    echo "  1:  v1.7.4"
+    echo "  2:  v1.8.3"
+    read -p "Select (1) or (2): " instVer
+    if [ $instVer == "1" ] || [ $instVer == "2"]
     then
-        echo "user telosuser doesn't exist.  Creating user..." 
-	adduser telosuser
-        usermod -aG sudo telosuser
-    else
-        echo "telosuser already exists...skipping."
-    fi
-    chown -R telosuser /ext
+        ### Check if a directory does not exist ###
+        echo "Checking if user 'telosuser' exists...."
+        if [ ! -d "/home/telosuser" ] 
+        then
+            echo "user telosuser doesn't exist.  Creating user..." 
+	    adduser telosuser
+            usermod -aG sudo telosuser
+        else
+            echo "telosuser already exists...skipping."
+        fi
+        chown -R telosuser /ext
 
-    #Install Eosio
-    cd /tmp
-    sudo apt-get update -y
-    wget 'https://github.com/EOSIO/eos/releases/download/v1.7.4/eosio_1.7.4-1-ubuntu-18.04_amd64.deb'
-    apt install ./eosio_1.7.4-1-ubuntu-18.04_amd64.deb
-    if [ ! -d "/ext/telos" ] 
-    then
-        mkdir /ext/telos/
-        mkdir /ext/telos/config
-        mkdir /ext/telos/state/
-        mkdir /ext/telos/state/state-history
-    fi
-    if [ ! -d "/var/log/nodeos" ] 
-    then
-        mkdir /var/log/nodeos
-	chown telosuser /var/log/nodeos/
-    fi
-    sudo chown -R telosuser /usr/opt/eosio/
-    ln -s /usr/opt/eosio/1.7.4/bin/nodeos /ext/telos/nodeos
-    ln -s /usr/opt/eosio/1.7.4/bin/cleos /ext/telos/cleos
-    cp -rf /root/bootstrap/scripts/. /ext/telos/
-    chown -R telosuser /ext/*
-    /ext/telos/nodeos -v	
+        #Install Eosio
+        cd /tmp
+        sudo apt-get update -y
+        wget 'https://github.com/EOSIO/eos/releases/download/v1.7.4/eosio_1.7.4-1-ubuntu-18.04_amd64.deb'
+        apt install ./eosio_1.7.4-1-ubuntu-18.04_amd64.deb
+        if [ ! -d "/ext/telos" ] 
+        then
+            mkdir /ext/telos/
+            mkdir /ext/telos/config
+            mkdir /ext/telos/state/
+            mkdir /ext/telos/state/state-history
+        fi
+        if [ ! -d "/var/log/nodeos" ] 
+        then
+            mkdir /var/log/nodeos
+   	    chown telosuser /var/log/nodeos/
+        fi
+        sudo chown -R telosuser /usr/opt/eosio/
+        ln -s /usr/opt/eosio/1.7.4/bin/nodeos /ext/telos/nodeos
+        ln -s /usr/opt/eosio/1.7.4/bin/cleos /ext/telos/cleos
+        cp -rf /root/bootstrap/scripts/. /ext/telos/
+        chown -R telosuser /ext/*
+        /ext/telos/nodeos -v	
+    else
+        echo "Invalid version selected.  EOSIO install cancelled."
+    fi	
 else
     echo "EOSIO install cancelled."
 fi	
