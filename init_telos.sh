@@ -119,6 +119,10 @@ then
         fi
         chown -R telosuser /ext
 
+        #Remove old symlinks
+        rm /ext/telos/cleos
+        rm /ext/telos/nodeos
+
         #Install Eosio
         cd /tmp
         sudo apt-get update -y
