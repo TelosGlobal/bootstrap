@@ -103,7 +103,7 @@ if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then        
     echo "Which EOSIO version? "
     echo "  1:  v1.7.4"
-    echo "  2:  v1.8.3"
+    echo "  2:  v1.8.4"
     read -p "Select (1) or (2): " instVer
     if [ $instVer == "1" ] || [ $instVer == "2" ]
     then
@@ -131,8 +131,8 @@ then
             wget 'https://github.com/EOSIO/eos/releases/download/v1.7.4/eosio_1.7.4-1-ubuntu-18.04_amd64.deb'
             apt install ./eosio_1.7.4-1-ubuntu-18.04_amd64.deb
         else
-            wget https://github.com/eosio/eos/releases/download/v1.8.3/eosio_1.8.3-1-ubuntu-18.04_amd64.deb
-            apt install ./eosio_1.8.3-1-ubuntu-18.04_amd64.deb
+            wget https://github.com/eosio/eos/releases/download/v1.8.4/eosio_1.8.4-1-ubuntu-18.04_amd64.deb
+            apt install ./eosio_1.8.4-1-ubuntu-18.04_amd64.deb
         fi
         if [ ! -d "/ext/telos" ] 
         then
@@ -152,8 +152,8 @@ then
             ln -s /usr/opt/eosio/1.7.4/bin/nodeos /ext/telos/nodeos
             ln -s /usr/opt/eosio/1.7.4/bin/cleos /ext/telos/cleos
 	else    
-            ln -s /usr/opt/eosio/1.8.3/bin/nodeos /ext/telos/nodeos
-            ln -s /usr/opt/eosio/1.8.3/bin/cleos /ext/telos/cleos
+            ln -s /usr/opt/eosio/1.8.4/bin/nodeos /ext/telos/nodeos
+            ln -s /usr/opt/eosio/1.8.4/bin/cleos /ext/telos/cleos
         fi
         cp -rf /root/bootstrap/scripts/. /ext/telos/
         chown -R telosuser /ext/*
