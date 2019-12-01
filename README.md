@@ -7,10 +7,27 @@ the server as either an API/P2P node or a producer node.
 Use this init script to kickstart a new telos node.  Spin up a node with:
 2 cpu, 32Gb ram, (2) 250Gb raw partitions for zfs, public IP (unless producer node)
 
+### HTTPS METHOD
 Execute this command to kick things off:
 
 `apt-get install git -y && cd /root && git clone https://github.com/TelosGlobal/bootstrap.git && cd /root/bootstrap/ && chown 775 /root/bootstrap/init_telos.sh`
 
+### SSH METHOD
+On the new Linux server, create an SSH Keypair:
+
+`ssh-keygen'
+Hit Enter to take all defaults (default folder and no passphrase)
+
+Copy the Public Key:
+`cat /root/.ssh/id_rsa.pub`
+
+Add the new public key to your GitHub key list:
+`https://github.com/settings/keys`
+
+Back on the new Linux server:
+`apt-get install git -y && cd /root && git clone git@github.com:TelosGlobal/bootstrap.git && cd /root/bootstrap/ && chown 775 /root/bootstrap/init_telos.sh`
+
+## Continue with the install:
 Then run this script:
 
 `/root/bootstrap/init_telos.sh`
