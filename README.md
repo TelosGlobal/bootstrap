@@ -32,7 +32,7 @@ Then run this script:
 
 `/root/bootstrap/init_telos.sh`
 
-##Git Push via SSH (Must save local SSH keys to github first)
+## Git Push via SSH (Must save local SSH keys to github first)
 `git push git@github.com:TelosGlobal/bootstrap master`
 
 ## To make sure git repo is set correctly
