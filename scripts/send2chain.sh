@@ -11,10 +11,10 @@
 ACCT="telosglobal1"
 
 #ENTER TARGET EXCHANGE ACCT NAME
-CRACCT="chainriftcom"
+CRACCT="xxxxxxx"
 
 #ENTER YOUR UNIQUE MEMO IDENTIFER (Optional, but used by most exchanges to route internally)
-MEMO="28WMLDJFL5"
+MEMO="xxxxxxx"
 
 #YOUR LOCAL WALLET WITH SIGNING KEYS WITHIN
 WALLET="x"
