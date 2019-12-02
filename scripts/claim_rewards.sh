@@ -8,7 +8,7 @@
 ACCT="telosglobal1"
 
 WALLET="claimer"
-KEY="PW5JEqL443b4CdfVKxxgccxK9XRauVrMQCu6rhW6uTWMFDK3YTwie"
+PWD=""
 
 date
 #Unlock wallet
