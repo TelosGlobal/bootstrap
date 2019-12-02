@@ -4,37 +4,43 @@
 #  Finds out how much liquid coin is available, rounds to whole number
 #  If liquid coins are available, continue
 #  Opens wallet $WALLET
-#  Sends coin to Chainrift $CRACCT (using $MEMO) 
+#  Sends coin to a target Exchange $CRACCT (using $MEMO) 
 #  Locks wallet
 
-<<<<<<< HEAD
+#ENTER YOUR ACCT NAME (ex. telosglobal1)
 ACCT="telosglobal1"
-CRACCT="chainriftcom"
-MEMO="28WMLDJFL5"
-WALLET="trx"
-KEY="PW5K2jiWEAVj2coHrDPQSjQbZSGUs27CS2rNZPckLFjZPibHns7z1"
-=======
-. .secret
 
->>>>>>> c5def6f710f2aa2f5941fbcdef94e5a697dad3f5
+#ENTER TARGET EXCHANGE ACCT NAME
+CRACCT="chainriftcom"
+
+#ENTER YOUR UNIQUE MEMO IDENTIFER (Optional, but used by most exchanges to route internally)
+MEMO="28WMLDJFL5"
+
+#YOUR LOCAL WALLET WITH SIGNING KEYS WITHIN
+WALLET="x"
+#WALLET PASSWORD
+PWD=""
+
+TRIGGER=5000
+KEEPAMT=500
+
+
 AMT=`/ext/telos/cleos get account $ACCT -j | jq '.core_liquid_balance'`
 AMTT=${AMT%.*}
 COIN=${AMTT:1}
 
-if [ $COIN -gt 0 ] 
+if [ $COIN -gt $TRIGGER ] 
 then
-<<<<<<< HEAD
-    /ext/telos/cleos wallet unlock -n $WALLET --password $KEY
-    /ext/telos/cleos push action eosio.token transfer '{"from":"$ACCT","to":"$CRACCT","quantity":"$COIN.0000 TLOS","memo":"$MEMO"}' -p "$ACCT@transfer"
+    SENDAMT=`expr $COIN - $KEEPAMT`
+    echo "Net send is "$SENDAMT
+
+    # FOR TESTING ONLY
+    #SENDAMT=10
+
+    /ext/telos/cleos wallet unlock -n $WALLET --password $PWD
+    echo "Balance is $AMT.  Coin is $COIN."
+    /ext/telos/cleos push action eosio.token transfer "{\"from\":\""$ACCT"\" \"to\":\""$CRACCT"\" \"quantity\":\""$SENDAMT".0000 TLOS\" \"memo\":\""$MEMO"\"}" -p "$ACCT@tgtrsfr"
     /ext/telos/cleos wallet lock -n $WALLET
 else
-    echo "Liquid balance is less than 1.  Balance is $AMT.  Bye."
-
-=======
-    /ext/telos/cleos wallet unlock -n $SENDWALLET --password $SENDKEY
-    /ext/telos/cleos push action eosio.token transfer '{"from":"$ACCT","to":"$CRACCT","quantity":"$COIN.0000 TLOS","memo":"$MEMO"}' -p "$ACCT@transfer"
-    /ext/telos/cleos wallet lock -n $SENDWALLET
-else
-    echo "Liquid balance is less than 1.  Balance is $AMT.  Bye."
->>>>>>> c5def6f710f2aa2f5941fbcdef94e5a697dad3f5
+    echo "Liquid balance is less than $TRIGGER.  Balance is $AMT.  Bye."
 fi

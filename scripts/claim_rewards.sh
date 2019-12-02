@@ -1,16 +1,19 @@
 #!/bin/bash
+
+#  Usage:  ./claim_rewards.sh
+#  Opens wallet $WALLET
+#  Claims any eligible BP rewards
+#  Locks wallet
+
+ACCT="telosglobal1"
+
+WALLET="claimer"
+KEY="PW5JEqL443b4CdfVKxxgccxK9XRauVrMQCu6rhW6uTWMFDK3YTwie"
+
 date
-<<<<<<< HEAD
 #Unlock wallet
-/ext/telos/cleos wallet unlock -n claimer --password PW5K2jiWEAVj2coHrDPQSjQbZSGUs27CS2rNZPckLFjZPibHns7z1
-=======
-. .secret
+/ext/telos/cleos wallet unlock -n $WALLET --password $PWD
 
-#Unlock wallet
-/ext/telos/cleos wallet unlock -n claimer --password $CLAIM_WALLET_KEY
-
->>>>>>> c5def6f710f2aa2f5941fbcdef94e5a697dad3f5
 #Claim
-/ext/telos/cleos push action eosio claimrewards '{"owner":"telosglobal1"}' -p telosglobal1@claimer
-/ext/telos/cleos wallet lock -n claimer
-
+/ext/telos/cleos -u http://10.126.107.14:8888 push action eosio claimrewards '{"owner":"$ACCT"}' -p $ACCT@claimer
+/ext/telos/cleos wallet lock -n $WALLET
