@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Run script as root from /root/bootstrap/
-# Run as:  upgrade_telos.sh -v <1.7.2>  (without the v)
+# Run as:  upgrade_telos.sh -v <1.8.8> 
 
 while getopts v: option
 do
@@ -17,7 +17,7 @@ done
 if [ -z "$VERSION" ]
 then
     echo "No arguments passed. Use the following example: "
-    echo "upgrade_telos.sh -v <1.7.2>  (without the v)"
+    echo "upgrade_telos.sh -v <1.8.8>"
     echo "Exiting..."
     exit
 fi
