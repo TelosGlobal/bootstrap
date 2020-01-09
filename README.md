@@ -15,7 +15,7 @@ Execute this command to kick things off:
 ### SSH METHOD
 On the new Linux server, create an SSH Keypair:
 
-`ssh-keygen'
+`ssh-keygen`
 Hit Enter to take all defaults (default folder and no passphrase)
 
 Copy the Public Key:
