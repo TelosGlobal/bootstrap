@@ -25,7 +25,7 @@ Add the new public key to your GitHub key list:
 `https://github.com/settings/keys`
 
 Back on the new Linux server:
-`apt-get install git -y && cd /root && git clone git@github.com:TelosGlobal/bootstrap.git && cd /root/bootstrap/ && chown 775 /root/bootstrap/init_telos.sh`
+`apt update -y && apt upgrade -y && apt-get install git -y && cd /root && git clone git@github.com:TelosGlobal/bootstrap.git && cd /root/bootstrap/ && chown 775 /root/bootstrap/init_telos.sh`
 
 ## Continue with the install:
 Then run this script:
