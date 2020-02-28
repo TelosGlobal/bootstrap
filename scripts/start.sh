@@ -18,6 +18,12 @@ $NODEOS --data-dir $DATADIR --config-dir $CFGDIR --disable-replay-opts &>> $LOGD
 PID=$(cat $DATADIR/nodeos.pid)
 if ps -p $PID > /dev/null; then
 	echo "Node OS started with pid $PID"
+	if [[ $(hostname) == *"prdr"* ]]
+        then
+            echo "I'm a producer node...setting affinity."
+	    taskset -p -c 0 $PID
+	    echo "Set PID $PID to CPU 0."
+	fi
 	echo
 	exit 0
 else
