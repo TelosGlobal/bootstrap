@@ -149,8 +149,8 @@ then
         sudo chown -R telosuser /usr/opt/eosio/
         if [ $instVer == "1" ]
         then
-            ln -s /usr/opt/eosio/2.0.4-1/bin/nodeos /ext/telos/nodeos
-            ln -s /usr/opt/eosio/2.0.4-1/bin/cleos /ext/telos/cleos
+            ln -s /usr/opt/eosio/2.0.4/bin/nodeos /ext/telos/nodeos
+            ln -s /usr/opt/eosio/2.0.4/bin/cleos /ext/telos/cleos
 	else    
             ln -s /usr/opt/eosio/1.8.12/bin/nodeos /ext/telos/nodeos
             ln -s /usr/opt/eosio/1.8.12/bin/cleos /ext/telos/cleos
