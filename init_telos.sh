@@ -129,7 +129,7 @@ then
         if [ $instVer == "1" ]
         then
             wget 'https://github.com/EOSIO/eos/releases/download/v2.0.5/eosio_2.0.5-1-ubuntu-18.04_amd64.deb'
-            apt install ./eosio_2.0.4-1-ubuntu-18.04_amd64.deb
+            apt install ./eosio_2.0.5-1-ubuntu-18.04_amd64.deb
         else
             wget 'https://github.com/EOSIO/eos/releases/download/v1.8.12/eosio_1.8.12-1-ubuntu-18.04_amd64.deb'
             apt install ./eosio_1.8.12-1-ubuntu-18.04_amd64.deb
