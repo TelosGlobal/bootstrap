@@ -9,7 +9,7 @@
 apt update && apt -y full-upgrade
 
 echo "Installing required software...."
-apt install -y software-properties-common git ntpstat jq pigz ntp python-pip python3-pip zfsutils-linux net-tools salt-minion schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop tree
+apt install -y software-properties-common git ntpstat jq pigz ntp python-pip python3-pip zfsutils-linux net-tools schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop tree
 sudo add-apt-repository universe -y
 sudo add-apt-repository ppa:certbot/certbot -y
 sudo apt-get update -y
@@ -102,7 +102,7 @@ read -p "Install EOSIO? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then        
     echo "Which EOSIO version? "
-    echo "  1:  v2.0.5"
+    echo "  1:  v2.0.6"
     echo "  2:  v1.8.12"
     read -p "Select (1) or (2): " instVer
     if [ $instVer == "1" ] || [ $instVer == "2" ]
@@ -128,8 +128,8 @@ then
         sudo apt-get update -y
         if [ $instVer == "1" ]
         then
-            wget 'https://github.com/EOSIO/eos/releases/download/v2.0.5/eosio_2.0.5-1-ubuntu-18.04_amd64.deb'
-            apt install ./eosio_2.0.5-1-ubuntu-18.04_amd64.deb
+            wget 'https://github.com/EOSIO/eos/releases/download/v2.0.6/eosio_2.0.6-1-ubuntu-18.04_amd64.deb'
+            apt install ./eosio_2.0.6-1-ubuntu-18.04_amd64.deb
         else
             wget 'https://github.com/EOSIO/eos/releases/download/v1.8.12/eosio_1.8.12-1-ubuntu-18.04_amd64.deb'
             apt install ./eosio_1.8.12-1-ubuntu-18.04_amd64.deb
@@ -149,8 +149,8 @@ then
         sudo chown -R telosuser /usr/opt/eosio/
         if [ $instVer == "1" ]
         then
-            ln -s /usr/opt/eosio/2.0.5/bin/nodeos /ext/telos/nodeos
-            ln -s /usr/opt/eosio/2.0.5/bin/cleos /ext/telos/cleos
+            ln -s /usr/opt/eosio/2.0.6/bin/nodeos /ext/telos/nodeos
+            ln -s /usr/opt/eosio/2.0.6/bin/cleos /ext/telos/cleos
 	else    
             ln -s /usr/opt/eosio/1.8.12/bin/nodeos /ext/telos/nodeos
             ln -s /usr/opt/eosio/1.8.12/bin/cleos /ext/telos/cleos
