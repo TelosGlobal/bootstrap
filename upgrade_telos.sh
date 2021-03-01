@@ -8,8 +8,8 @@ do
 case "${option}"
 in
 v) VERSION=${OPTARG};;
-#d) DATE=${OPTARG};;
-#p) PRODUCT=${OPTARG};;
+u) URL=${OPTARG};;
+#h) PRODUCT=${OPTARG};;
 #f) FORMAT=$OPTARG;;
 esac
 done
@@ -22,25 +22,44 @@ then
     exit
 fi
 
-echo "Stopping nodeos..."
-/ext/telos/stop.sh
-cd /tmp
+#Build URL
+if [ -z "$URL" ]
+then
+    URL="https://github.com/eosio/eos/releases/download/v$VERSION/eosio_$VERSION-1-ubuntu-18.04_amd64.deb"
+fi
+echo "Using URL: $URL"
 
-echo "Removing current EOSIO package..."
-sudo apt remove eosio -y
+function validate_url(){
+    wget --spider $1
+    return $?
+}
 
-echo "Cloning v$VERSION..."
-wget https://github.com/eosio/eos/releases/download/v$VERSION/eosio_$VERSION-1-ubuntu-18.04_amd64.deb
+if validate_url $URL; then
 
-echo "Installing v$VERSION..."
-sudo apt install ./eosio_$VERSION-1-ubuntu-18.04_amd64.deb
+   echo "Stopping nodeos..."
+   /ext/telos/stop.sh
+   cd /tmp
 
-echo "Updating symlinks..."
-rm /ext/telos/nodeos
-rm /ext/telos/cleos
-ln -s /usr/opt/eosio/$VERSION/bin/nodeos /ext/telos/nodeos
-ln -s /usr/opt/eosio/$VERSION/bin/cleos /ext/telos/cleos
+   echo "Removing current EOSIO package..."
+   sudo apt remove eosio -y
 
-chown -R telosuser /ext/telos/
+   echo "Cloning v$VERSION..."
+   wget $URL
 
-echo "Upgraded to EOSIO v$VERSION.  Login as telosuser and restart nodeos."
+   echo "Installing v$VERSION..."
+   sudo apt install ./eosio_$VERSION-1-ubuntu-18.04_amd64.deb
+
+   echo "Updating symlinks..."
+   rm /ext/telos/nodeos
+   rm /ext/telos/cleos
+   ln -s /usr/opt/eosio/$VERSION/bin/nodeos /ext/telos/nodeos
+   ln -s /usr/opt/eosio/$VERSION/bin/cleos /ext/telos/cleos
+   chown -R telosuser /ext/telos/
+
+   echo "Upgraded to EOSIO v$VERSION.  Login as telosuser and restart nodeos."
+
+else
+   echo "File not found at: "$URL
+   echo "Check version and try again.  Upgrade aborted."
+fi
+
