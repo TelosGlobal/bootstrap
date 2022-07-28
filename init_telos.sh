@@ -25,6 +25,9 @@ chmod 0700 $HOME/.ssh
 echo "Setting up ntp...."
 /usr/bin/ntpq -p
 
+echo "Changing timezone to UTC..."
+sudo timedatectl set-timezone UTC
+
 #Change hostname
 echo "The current hostname is $HOSTNAME"
 read -p "Set Hostname? (y/n): " confirm
@@ -117,8 +120,17 @@ then
         else
             echo "telosuser already exists...skipping."
         fi
-        chown -R telosuser /ext
-
+	
+	### Check if a directory does not exist ###
+        echo "Checking if dir '/ext' exists...."
+        if [ ! -d "/ext" ] 
+        then
+            chown -R telosuser /ext
+        else
+            mkdir /ext
+	    chown -R telosuser /ext
+	fi
+        
         #Remove old symlinks
         rm /ext/telos/cleos
         rm /ext/telos/nodeos
@@ -137,10 +149,15 @@ then
         if [ ! -d "/ext/telos" ] 
         then
             mkdir /ext/telos/
+	    chown -R telosuser /ext/telos
             mkdir /ext/telos/config
+	    chown -R telosuser /ext/telos/config
             mkdir /ext/telos/state/
+	    chown -R telosuser /ext/telos/state
             mkdir /ext/telos/state/state-history
+	    chown -R telosuser /ext/telos/state/state-history
         fi
+	
         if [ ! -d "/var/log/nodeos" ] 
         then
             mkdir /var/log/nodeos
