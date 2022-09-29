@@ -54,7 +54,7 @@ if validate_url $URL; then
    wget $URL
 
    echo "Installing v$VERSION..."
-   sudo apt install ./leap-$VERSION-ubuntu-18.04_amd64.deb -y
+   sudo apt install ./leap-$VERSION-ubuntu18.04-x86_64.deb -y
 
    chown -R telosuser /ext/telos/
 
