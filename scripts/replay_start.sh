@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NODEOS=/ext/telos/nodeos
+NODEOS=nodeos
 DATADIR=/ext/telos
 CFGDIR=/ext/telos/config
 LOGDIR=/var/log/nodeos

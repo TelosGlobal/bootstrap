@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/ext/telos/cleos wallet unlock -n default
-/ext/telos/cleos system unregprod telosglobal1
-/ext/telos/cleos wallet lock -n default
+cleos wallet unlock -n default
+cleos system unregprod telosglobal1
+cleos wallet lock -n default
 

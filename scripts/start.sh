@@ -1,7 +1,7 @@
 #!/bin/bash
 #/usr/bin/php /root/scripts/slack.php "Jungle Test Server" "businesscat" "infrastructure-team" "Starting NodeOS"
 
-NODEOS=/ext/telos/nodeos
+NODEOS=nodeos
 DATADIR=/ext/telos
 CFGDIR=/ext/telos/config
 LOGDIR=/var/log/nodeos
