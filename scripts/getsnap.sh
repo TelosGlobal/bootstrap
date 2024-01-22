@@ -14,10 +14,10 @@ else
 fi
 echo
 
-echo "Unpacking the files..."
-zstd --rm latest
 rm snapshot.bin
-mv latest.zst snapshot.bin
+echo "Unpacking the files..."
+zstd -o snapshot.bin --rm latest
+#mv latest.zst snapshot.bin
 
 echo "Done.  Don't forget to empty your blocks/ and state/ folders then run ./snapstart.sh"
 
