@@ -8,7 +8,7 @@ echo "Waiting for TelosGlobal to finish their turn..."
 # continue until BPNOW = telosglobal1 and $n equals 1
 while [[ $BPNOW != 'telosglobal1' ]] || [[ $n -ne 1 ]]
 do
-    BPGET=`curl -sS 'https://node1.na.telosglobal.io:8899/v1/chain/get_info' | jq -c '.head_block_producer'`
+    BPGET=`curl -sS 'https://node1.us-west.telosglobal.io/v1/chain/get_info' | jq -c '.head_block_producer'`
     # echo $BPGET
     BPNOW=${BPGET:1:12}
 
