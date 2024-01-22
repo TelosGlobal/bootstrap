@@ -25,7 +25,7 @@ fi
 #Build URL
 if [ -z "$URL" ]
 then
-    URL="https://github.com/AntelopeIO/leap/releases/download/v$VERSION/leap_$VERSION_amd64.deb"
+    URL="https://github.com/AntelopeIO/leap/releases/download/v${VERSION}/leap_${VERSION}_amd64.deb"
 fi
 echo "Using URL: $URL"
 
@@ -54,7 +54,7 @@ if validate_url $URL; then
    wget $URL
 
    echo "Installing v$VERSION..."
-   sudo apt install ./leap_$VERSION_amd64.deb -y
+   sudo apt install ./leap_${VERSION}_amd64.deb -y
 
    chown -R telosuser /ext/telos/
 
