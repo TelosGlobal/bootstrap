@@ -1,15 +1,3 @@
 #!/bin/bash
-# Nagios Plugin Bash Script - check_block_produce.sh
-# This script checks if stderr.txt shows blocks produced
-# This script lives at: /usr/local/nagios/libexec/
-OUTPUT=`sudo cleos get table eosio eosio producers -L "telosglobal1" --limit 1|jq '.rows[].is_active'`
-echo $OUTPUT
-if [ $OUTPUT -eq 1 ]
-    then
-        echo "OK, Producer is ACTIVE"
-        exit 0
-    else
-        echo "CRITICAL, NOT ACTIVE - is_active=$OUTPUT"
-        exit 2
-fi
+/usr/bin/cleos get table eosio eosio producers -L "telosglobal1" --limit 1|jq '.rows[].is_active'
 
