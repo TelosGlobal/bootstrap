@@ -5,15 +5,38 @@
 # Execute this command to kick things off:
 # apt update -y && apt upgrade -y && apt-get install git -y && cd /root && git clone https://github.com/TelosGlobal/bootstrap.git && cd bootstrap && ./init_telos.sh
 #
+# Run script as root from /root/bootstrap/
+# Run as:  init_telos.sh -v <5.0.0>
+
+while getopts v: option
+do
+case "${option}"
+in
+v) VERSION=${OPTARG};;
+u) URL=${OPTARG};;
+#h) PRODUCT=${OPTARG};;
+#f) FORMAT=$OPTARG;;
+esac
+done
+
+if [ -z "$VERSION" ]
+then
+    echo "No arguments passed. Use the following example: "
+    echo "init_telos.sh -v <5.0.0>"
+    echo "Exiting..."
+    exit
+fi
 
 apt update && apt -y full-upgrade
 
 echo "Installing required software...."
-apt install -y software-properties-common git ntpstat jq pigz ntp python-pip python3-pip zfsutils-linux net-tools schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop tree
+apt install -y software-properties-common git ntpstat jq pigz ntp python3-pip net-tools schedtool stress cpufrequtils lm-sensors linux-tools-generic htop iotop tree
 sudo add-apt-repository universe -y
 sudo add-apt-repository ppa:certbot/certbot -y
 sudo apt-get update -y
-sudo apt-get install certbot -y
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+sudo apt autoremove -y
 
 #General Updates
 
@@ -75,111 +98,67 @@ then
 else
     echo "Salt setup cancelled."
 fi
-echo "Show current ZFS list"
-zfs list
-read -p "Configure ZFS? (y/n): " confirm
+
+read -p "Install LEAP? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then        
-    echo "ZFS setup ..."
-    parted -l
-    read -p "Enter first raw disk (sdc, sdd, etc): " disk1
-    read -p "Enter second raw disk (sdc, sdd, etc): " disk2
-    read -p "Continue? (y/n): " confirm
-    if [ $confirm == "Y" ] || [ $confirm == "y" ]
+    echo "Installing LEAP version $VERSION "
+    ### Check if a directory does not exist ###
+    echo "Checking if user 'telosuser' exists...."
+    if [ ! -d "/home/telosuser" ] 
     then
-	echo "Creating pool and filesystem ..."
-	zpool create eosio $disk1 $disk2
-	sleep 5
-	zfs create -o mountpoint=/ext -o compression=on -o atime=off eosio/ext
-	zpool list
-	zpool status
-	zfs list
+        echo "user telosuser doesn't exist.  Creating user..." 
+        adduser telosuser
+        usermod -aG sudo telosuser
     else
-	echo "ZFS Setup cancelled."
+        echo "telosuser already exists...skipping."
     fi
-else
-    echo "ZFS configuration cancelled."
-fi
-
-read -p "Install EOSIO? (y/n): " confirm
-if [ $confirm == "Y" ] || [ $confirm == "y" ]
-then        
-    echo "Which EOSIO version? "
-    echo "  1:  v2.0.6"
-    echo "  2:  v1.8.12"
-    read -p "Select (1) or (2): " instVer
-    if [ $instVer == "1" ] || [ $instVer == "2" ]
+	
+    ### Check if a directory does not exist ###
+    echo "Checking if dir '/ext' exists...."
+    if [ -d "/ext" ] 
     then
-        ### Check if a directory does not exist ###
-        echo "Checking if user 'telosuser' exists...."
-        if [ ! -d "/home/telosuser" ] 
-        then
-            echo "user telosuser doesn't exist.  Creating user..." 
-	    adduser telosuser
-            usermod -aG sudo telosuser
-        else
-            echo "telosuser already exists...skipping."
-        fi
-	
-	### Check if a directory does not exist ###
-        echo "Checking if dir '/ext' exists...."
-        if [ ! -d "/ext" ] 
-        then
-            chown -R telosuser /ext
-        else
-            mkdir /ext
-	    chown -R telosuser /ext
-	fi
-        
-        #Remove old symlinks
-        rm /ext/telos/cleos
-        rm /ext/telos/nodeos
-
-        #Install Eosio
-        cd /tmp
-        sudo apt-get update -y
-        if [ $instVer == "1" ]
-        then
-            wget 'https://github.com/EOSIO/eos/releases/download/v2.0.6/eosio_2.0.6-1-ubuntu-18.04_amd64.deb'
-            apt install ./eosio_2.0.6-1-ubuntu-18.04_amd64.deb
-        else
-            wget 'https://github.com/EOSIO/eos/releases/download/v1.8.12/eosio_1.8.12-1-ubuntu-18.04_amd64.deb'
-            apt install ./eosio_1.8.12-1-ubuntu-18.04_amd64.deb
-        fi
-        if [ ! -d "/ext/telos" ] 
-        then
-            mkdir /ext/telos/
-	    chown -R telosuser /ext/telos
-            mkdir /ext/telos/config
-	    chown -R telosuser /ext/telos/config
-            mkdir /ext/telos/state/
-	    chown -R telosuser /ext/telos/state
-            mkdir /ext/telos/state/state-history
-	    chown -R telosuser /ext/telos/state/state-history
-        fi
-	
-        if [ ! -d "/var/log/nodeos" ] 
-        then
-            mkdir /var/log/nodeos
-   	    chown telosuser /var/log/nodeos/
-        fi
-        sudo chown -R telosuser /usr/opt/eosio/
-        if [ $instVer == "1" ]
-        then
-            ln -s /usr/opt/eosio/2.0.6/bin/nodeos /ext/telos/nodeos
-            ln -s /usr/opt/eosio/2.0.6/bin/cleos /ext/telos/cleos
-	else    
-            ln -s /usr/opt/eosio/1.8.12/bin/nodeos /ext/telos/nodeos
-            ln -s /usr/opt/eosio/1.8.12/bin/cleos /ext/telos/cleos
-        fi
-        cp -rf /root/bootstrap/scripts/. /ext/telos/
-        chown -R telosuser /ext/*
-        /ext/telos/nodeos -v	
+        chown -R telosuser /ext
     else
-        echo "Invalid version selected.  EOSIO install cancelled."
-    fi	
+        mkdir /ext
+        chown -R telosuser /ext
+    fi
+        
+    #Remove old symlinks
+    rm /ext/telos/cleos
+    rm /ext/telos/nodeos
+
+    #Install LEAP
+    cd /tmp
+    sudo apt-get update -y
+    wget "https://github.com/AntelopeIO/leap/releases/download/v${VERSION}/leap_${VERSION}_amd64.deb"
+    echo "Installing v$VERSION..."
+    sudo apt install ./leap_${VERSION}_amd64.deb -y
+
+    if [ ! -d "/ext/telos" ] 
+    then
+        mkdir /ext/telos/
+        chown -R telosuser /ext/telos
+        mkdir /ext/telos/config
+        chown -R telosuser /ext/telos/config
+        mkdir /ext/telos/state/
+        chown -R telosuser /ext/telos/state
+        mkdir /ext/telos/state/state-history
+        chown -R telosuser /ext/telos/state/state-history
+    fi
+	
+    if [ ! -d "/var/log/nodeos" ] 
+    then
+        mkdir /var/log/nodeos
+        chown telosuser /var/log/nodeos/
+    fi
+
+    sudo chown -R telosuser /usr/opt/eosio/
+    cp -rf /root/bootstrap/scripts/. /ext/telos/
+    chown -R telosuser /ext/*
+    /ext/telos/nodeos -v	
 else
-    echo "EOSIO install cancelled."
+    echo "LEAP install cancelled."
 fi	
 
 echo "This ONLY applies to NODE01 and REQUIRES FW PORTS 80/8899 OPEN"
@@ -217,18 +196,49 @@ else
     echo "NGINX install cancelled."
 fi
 
-read -p "Install Nagios? (Takes about 10 mins) (y/n): " confirm
+read -p "Install Zabbix Agent? (y/n): " confirm
 if [ $confirm == "Y" ] || [ $confirm == "y" ]
 then
+    #function to call after installing agent
+    function install_agent {
+        apt install zabbix-agent2 zabbix-agent2-plugin-*
+
+        #Add zabbix server into zabbix.conf
+        sed -i.bak 's/Server=127\.0\.0\.1/Server=127\.0\.0\.1\,63\.250\.47\.6/' /etc/zabbix/zabbix_agent2.conf
+
+        #restart and enable for start on reboot
+        systemctl restart zabbix-agent2
+        systemctl enable zabbix-agent2
+        rm zabbix-release*
+    }
+
     cd /tmp
-    wget https://assets.nagios.com/downloads/nagiosxi/agents/linux-nrpe-agent.tar.gz
-    tar xzf linux-nrpe-agent.tar.gz
-    cd linux-nrpe-agent
-    sudo ./fullinstall -n -i '127.0.0.1 64.74.98.106 10.91.176.13'
-    /etc/init.d/xinetd restart
-    echo "See /root/bootstrap/scripts/nagios/README.md to finish setup."
+
+    #Get version
+    ver=`lsb_release -rs| awk -F'.' '{print $1}'`;
+    echo "OS Version: "$ver
+
+    #Check version and run correct install script
+    if [ $ver == 18 ] 
+    then
+        wget https://repo.zabbix.com/zabbix/6.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.4-1+ubuntu18.04_all.deb
+        dpkg -i zabbix-release_6.4-1+ubuntu18.04_all.deb
+        install_agent
+    elif [ $ver == 20 ] 
+    then
+        wget https://repo.zabbix.com/zabbix/6.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.4-1+ubuntu20.04_all.deb
+        dpkg -i zabbix-release_6.4-1+ubuntu20.04_all.deb
+        install_agent
+    elif [ $ver == 22 ] 
+    then
+        wget https://repo.zabbix.com/zabbix/6.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.4-1+ubuntu22.04_all.deb
+        dpkg -i zabbix-release_6.4-1+ubuntu22.04_all.deb
+        install_agent
+    else
+        echo "No compatible OS version found."
+    fi
 else
-    echo "Nagios setup cancelled."
+    echo "Zabbix setup cancelled."
 fi
 
 echo "bootstrap completed."
