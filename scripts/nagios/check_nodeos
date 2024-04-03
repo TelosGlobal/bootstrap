@@ -1,0 +1,10 @@
+#!/bin/bash
+# Nagios Plugin Bash Script - check_nodeos
+# This script checks if nodeos is running on server by checking the PID
+# This script lives at: /ext/telos/nagios/
+
+
+value=$(</ext/telos/nodeos.pid)
+#echo "$value"
+ps -p $value | grep nodeos | wc -l
+
