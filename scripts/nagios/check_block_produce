@@ -1,15 +1,4 @@
 #!/bin/bash
 # Nagios Plugin Bash Script - check_block_produce.sh
-# This script checks if stderr.txt shows blocks produced
-# This script lives at: /usr/local/nagios/libexec/
-OUTPUT=`sudo tail -n 400 /var/log/nodeos/stderr.txt|grep -i produced | wc -l`
-#echo $OUTPUT
-if [ $OUTPUT -gt 0 ]
-    then
-        echo "OK, Produced $OUTPUT blocks"
-        exit 0
-    else
-        echo "CRITICAL, NOT PRODUCING - found $OUTPUT blocks"
-        exit 2
-fi
+sudo tail -n 400 /var/log/nodeos/stderr.txt|grep -i produced | wc -l
 
